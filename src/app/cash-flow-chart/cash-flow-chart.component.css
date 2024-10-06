@@ -1,0 +1,6 @@
+.chart-container {
+  position: relative;
+  width: 400px; /* Make sure it takes full width of the parent container */
+  height: 100%; /* Adjust height accordingly to fit within box2 */
+  max-height: 400px; /* Optional: Set a max height */
+}

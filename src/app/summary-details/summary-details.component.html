@@ -1,0 +1,476 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<!-- Include the Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="summary-details-container">
+  <div class="navigator">
+    <ul>
+      <li>
+        <a href="#">
+          <i class="fas fa-home home-img"></i>
+          <!-- Home Icon Only -->
+        </a>
+      </li>
+      <li>
+        <i class="fas fa-greater-than" style="font-size: 0.7rem"></i>
+        <a style="color: grey" href="#">Cashflow Forecasting</a>
+      </li>
+      <li aria-current="page">
+        <i class="fas fa-greater-than" style="font-size: 0.7rem"></i>
+        <a style="color: grey" [routerLink]="['/summary']">Summary</a>
+      </li>
+
+      <li aria-current="page">
+        <i class="fas fa-greater-than" style="font-size: 0.7rem"></i>
+        <a style="color: grey" href="javascript:void(0)">Details</a>
+      </li>
+    </ul>
+
+    <div class="cashflow-forecast-nav">
+      <div class="left">
+        <div class="cashflow-text">Cash Flow Forecast- Summary</div>
+      </div>
+      <div class="right">
+        <div class="actions">
+          <button title="Mail"><mat-icon>mail_outline</mat-icon></button>
+          <button title="Download"><mat-icon>download</mat-icon></button>
+          <button title="Refresh"><mat-icon>sync</mat-icon></button>
+          <button title="Print"><mat-icon>local_printshop</mat-icon></button>
+          <button title="person"><mat-icon>person</mat-icon></button>
+          <button title="link">
+            <mat-icon>link</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <section class="section" id="cashflow">
+      <div class="top-section">
+        <div class="top-section-inside">
+          <section style="display: flex; flex-direction: column; gap: 5px">
+            <label for="account-no" style="font-size: 0.8rem">Account No</label>
+            <div *ngIf="!data || data.length === 0">
+              {{ accountNumber }}
+            </div>
+            <select
+              *ngIf="data && data.length > 0"
+              id="account-no"
+              name="account-no"
+              [(ngModel)]="selectedAccount"
+              (change)="onAccountChange($event)"
+            >
+              <option
+                *ngFor="let account of data"
+                [value]="account.accountNumber"
+              >
+                {{ account.accountNumber }} - INR
+              </option>
+            </select>
+            <div class="border-bottom1"></div>
+          </section>
+        </div>
+      </div>
+      <div class="bottom-section">
+        <div class="bottom-section-left">
+          <div class="ac-name" style="font-size: 0.8rem">Account Name</div>
+          <div class="ac-value" style="font-size: 0.8rem" *ngIf="accountTitle">
+            {{ accountTitle }}
+          </div>
+        </div>
+        <div class="bottom-section-right">
+          <div class="currency-selector">
+            <img
+              src="assets/img/india.png"
+              alt="Country Flag"
+              class="country-flag me-2"
+            />
+            <select style="color: black; font-weight: 600">
+              <option value="AED">IND</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="container">
+      <div class="box1 box-data1">
+        <div class="inner-box1">
+          <span class="heading-insight">Insights</span>
+          <div class="bottom-boxes">
+            <div class="bottom-box">
+              <div class="bottom-box-overflow">
+                <div class="scroller">
+                  <div class="lower-text">
+                    <img src="assets/green arrow.png" alt="" />
+                    <div>
+                      AE611235566565656-AED Account Has High Cashflow for OCT
+                      2021
+                    </div>
+                  </div>
+                  <div class="lower-text">
+                    <img src="assets/red arrow.png" alt="" />
+                    <div>
+                      AE611235564564546-AED Account Has Low Cashflow for OCT
+                      2021
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="border-create"></div> -->
+            <div class="bottom-box">
+              <div class="bottom-box-overflow">
+                <div class="scroller">
+                  <div class="lower-text">
+                    <img src="assets/green arrow.png" alt="" />
+                    <div>
+                      AE611235566565656-AED Account Has High Cashflow for OCT
+                      2021
+                    </div>
+                  </div>
+                  <div class="lower-text">
+                    <img src="assets/red arrow.png" alt="" />
+                    <div>
+                      AE611235564564546-AED Account Has Low Cashflow for OCT
+                      2021
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box2">
+        <app-cash-flow-chart></app-cash-flow-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-overview-container">
+    <div class="overview-container">
+      <div class="datepicker-box">
+        <div class="datepicker-inner-box">
+          <div class="left-top">
+            <div class="heading">Forecast Period</div>
+            <div class="heading-bottom">
+              <span>Select Period</span>
+              <div>
+                <label for="start"></label>
+                <input
+                  type="date"
+                  id="start"
+                  [(ngModel)]="startDate"
+                  (change)="onStartChange()"
+                  required
+                />
+
+                <label for="end"></label>
+                <input
+                  type="date"
+                  id="end"
+                  [(ngModel)]="endDate"
+                  (change)="onEndChange()"
+                  required
+                  [min]="startDate"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="left-bottom">
+            <div>Showing forecast for <span>6 months</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="border-first"></div>
+      <div class="box1 box-data">
+        <div class="inner-box">
+          <span class="heading">Cashflow Overview</span>
+          <div class="bottom-boxes">
+            <div class="bottom-box">
+              <span class="data"> AED {{ totalCashInflow || "---" }} </span>
+              <span class="inner-heading">Total Cash Inflow</span>
+              <div class="lower-text">
+                <img src="assets/green arrow.png" alt="" />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+            <span class="border1"></span>
+            <div class="bottom-box">
+              <span class="data"> AED {{ totalCashOutflow || "---" }} </span>
+              <span class="inner-heading">Total Cash Outflow</span>
+              <div class="lower-text">
+                <img src="assets/red arrow.png" alt="" />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+            <span class="border2"></span>
+            <div class="bottom-box">
+              <span class="data"> AED {{ netCashflow || "---" }} </span>
+              <span class="inner-heading">Net Cashflow</span>
+              <div class="lower-text">
+                <img
+                  *ngIf="netCashflow > 0"
+                  src="assets/green arrow.png"
+                  alt="Green Arrow"
+                />
+                <img
+                  *ngIf="netCashflow < 0"
+                  src="assets/red arrow.png"
+                  alt="Red Arrow"
+                />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+
+            <span class="border2"></span>
+            <div
+              style="
+                display: flex;
+                width: 200px;
+                justify-content: space-between;
+              "
+            >
+              <div
+                class="bottom-box"
+                style="display: flex; align-items: start; gap: 5px"
+              >
+                <span class="inner-heading">Opening Balance </span>
+                <span class="inner-heading">Closing Balance</span>
+                <span class="inner-heading">OD limit</span>
+              </div>
+              <div
+                class="bottom-box"
+                style="display: flex; align-items: end; gap: 5px"
+              >
+                <span class="inner-heading font-size" *ngIf="openingBalance"
+                  >AED {{ openingBalance }}</span
+                >
+                <span class="inner-heading font-size" *ngIf="closingBalance"
+                  >AED {{ closingBalance }}</span
+                >
+                <span class="inner-heading font-size" *ngIf="odLimit"
+                  >AED {{ odLimit }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-second"></div>
+      <div class="fl-box4">
+        <div class="fl-inner-box">
+          <div class="fl-heading">
+            <div>Quick Action</div>
+          </div>
+          <div class="fl-links">
+            <a href="href">Book Forward Contract</a>
+            <a href="href">Start SIP</a>
+            <a href="href">Book Recurring Deposits</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="transaction-container">
+    <div class="transaction-header">
+      <div class="left-side">
+        <button class="btn-all-transactions">
+          All Transactions ({{ transactions.length }})
+        </button>
+        <button class="btn-ignore">Ignored (0)</button>
+      </div>
+      <div class="right-side">
+        <div class="search-box">
+          <mat-icon>search</mat-icon>
+          <input
+            matInput
+            class="search-input"
+            type="text"
+            placeholder="Enter Key to search"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+          />
+        </div>
+        <div class="nav">
+          <ul>
+            <li>
+              <mat-icon>zoom_in</mat-icon>
+            </li>
+
+            <li (click)="printTable()" style="cursor: pointer">
+              <mat-icon>local_printshop</mat-icon>
+            </li>
+            <li>
+              <mat-icon>settings_input_component</mat-icon>
+            </li>
+            <li>
+              <mat-icon>mail_outline</mat-icon>
+            </li>
+            <li>
+              <mat-icon>download</mat-icon>
+            </li>
+            <li>
+              <mat-icon>more_vert</mat-icon>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom-section -->
+    <div id="printableTable" style="width: 100%">
+      <table class="transaction-table">
+        <thead class="mini-nav">
+          <tr>
+            <th class="source" (click)="sortTransactions('source')">
+              <div class="source-left">
+                <mat-icon>unfold_more</mat-icon> Source
+              </div>
+              <div class="filter-icon">
+                <mat-icon>filter_alt</mat-icon>
+              </div>
+            </th>
+
+            <th class="value-date" (click)="sortTransactions('valueDate')">
+              <div class="value-date-left">
+                <mat-icon>unfold_more</mat-icon> Value Date
+                <mat-icon>filter_alt</mat-icon>
+              </div>
+            </th>
+
+            <th class="transaction-narration">Transaction Narration</th>
+
+            <th class="beneficiary">Beneficiary/Payers</th>
+
+            <th class="withdrawal-aed" (click)="sortTransactions('withdrawals')">
+              <div class="withdrawal-left">
+                <div><mat-icon>unfold_more</mat-icon></div>
+                Withdrawals (AED)
+              </div>
+            </th>
+
+            <th class="deposit-aed" (click)="sortTransactions('deposits')">
+              <div class="deposit-left">
+                <mat-icon>unfold_more</mat-icon> Deposits (AED)
+              </div>
+            </th>
+
+            <th class="balance-aed" (click)="sortTransactions('balance')">
+              <div class="balance-left">
+                <mat-icon>unfold_more</mat-icon> Balance (AED)
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="opening-balance">
+            <td style="color: black">Opening Balance</td>
+            <td style="font-weight: 500; color: black" *ngIf="startDate">
+              {{ startDateValue | date : "dd MMM yy" }}
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight: 500; color: black" *ngIf="openingBalance">
+              {{ openingBalance }}
+            </td>
+          </tr>
+          <tr class="actual-transaction">
+            <td class="expand-data" style="width: 100%">
+              <mat-icon>expand_more</mat-icon>
+              Actual Transaction
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <ng-container>
+            <tr
+              *ngFor="let transaction of paginatedTransactions; let last = last"
+              class="actual-transaction-data"
+              style="color: black"
+              [ngClass]="{ 'last-row': last }"
+            >
+              <td class="modification">
+                {{ transaction.source }}
+                <span
+                  *ngIf="transaction.source === 'Manual Entry'"
+                  class="manual-modification"
+                >
+                  Manual
+                </span>
+              </td>
+              <td>{{ transaction.valueDate | date : "dd MMM yy" }}</td>
+              <td>{{ transaction.narration }}</td>
+              <td>{{ transaction.beneficiaryPayers }}</td>
+              <td class="withdrawal">
+                {{ transaction.withdrawals | number : "1.2-2" }}
+              </td>
+              <td class="deposit">
+                {{ transaction.deposits | number : "1.2-2" }}
+              </td>
+              <td>{{ transaction.balance | number : "1.2-2" }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-controls">
+      <div class="pagination-bar">
+        <div class="rows-per-page">
+          <label for="rowsPerPage">Rows per page: </label>
+          <select id="rowsPerPage" (change)="onItemsPerPageChange($event)">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        <div class="pagination-controls">
+          <button
+            (click)="onPageChange(currentPage - 1)"
+            [disabled]="currentPage === 1"
+          >
+            <i class="material-icons">chevron_left</i>
+          </button>
+
+          <ng-container
+            *ngFor="let page of [].constructor(totalPages); let i = index"
+          >
+            <button
+              (click)="onPageChange(i + 1)"
+              [class.active]="currentPage === i + 1"
+            >
+              {{ i + 1 }}
+            </button>
+          </ng-container>
+
+          <button
+            (click)="onPageChange(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+          >
+            <i class="material-icons">chevron_right</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

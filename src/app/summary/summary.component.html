@@ -1,0 +1,329 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<!-- Include the Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="summury-container">
+  <div class="navigator">
+    <ul>
+      <li>
+        <a href="#">
+          <i class="fas fa-home home-img"></i>
+          <!-- Home Icon Only -->
+        </a>
+      </li>
+      <li>
+        <i class="fas fa-greater-than" style="font-size: 0.7rem"></i>
+        <a style="color: grey" href="#">Cashflow Forecasting</a>
+      </li>
+      <li aria-current="page">
+        <i class="fas fa-greater-than" style="font-size: 0.7rem"></i>
+        <a style="color: grey" href="javascript:void(0)">Summary</a>
+      </li>
+    </ul>
+
+    <div class="cashflow-forecast-nav">
+      <div class="left">
+        <div class="cashflow-text">Cash Flow Forecast- Summary</div>
+      </div>
+      <div class="right">
+        <div class="actions">
+          <button title="Mail"><mat-icon>mail_outline</mat-icon></button>
+          <button title="Download"><mat-icon>download</mat-icon></button>
+          <button title="Refresh"><mat-icon>sync</mat-icon></button>
+          <button title="Print"><mat-icon>local_printshop</mat-icon></button>
+          <button title="person"><mat-icon>person</mat-icon></button>
+          <button title="link">
+            <mat-icon>link</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <section class="section" id="cashflow">
+      <div class="image"></div>
+      <div class="image1"></div>
+      <div class="top-section">
+        <img class="nescafe-img" src="assets/img/nescafe.png" alt="" />
+        <div class="left">Nescafe</div>
+        <div class="right">
+          <div class="currency-selector">
+            <img
+              src="assets/img/india.png"
+              alt="Country Flag"
+              class="country-flag me-2"
+            />
+            <select style="color: black; font-weight: 600">
+              <option value="AED">IND</option>
+
+              <!-- Add more currencies as needed -->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-section">
+        <div class="left">
+          <div class="id-values" style="color: black; font-weight: 600">
+            {{ cifId.length > 0 ? cifId[3].cifId : "No CIF ID" }}
+          </div>
+          <div class="id-string">CIF ID</div>
+        </div>
+        <div class="right">
+          <div style="color: black; font-weight: 600">{{ cifId.length }}</div>
+          <div class="id-string">Accounts</div>
+        </div>
+      </div>
+    </section>
+    <div class="container">
+      <div class="box1 box-data">
+        <div class="inner-box">
+          <span class="heading">Cashflow Overview</span>
+          <div class="bottom-boxes">
+            <div class="bottom-box">
+              <span class="data">AED 10,60,000</span>
+              <span class="inner-heading">Total Cash Inflow</span>
+              <div class="lower-text">
+                <img src="assets/green arrow.png" alt="" />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+            <span class="border1"></span>
+            <div class="bottom-box">
+              <span class="data">AED 22,500</span>
+              <span class="inner-heading">Total Cash Outflow</span>
+              <div class="lower-text">
+                <img src="assets/red arrow.png" alt="" />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+            <span class="border2"></span>
+            <div class="bottom-box">
+              <span class="data">AED 83,500</span>
+              <span class="inner-heading">Net Cashflow</span>
+              <div class="lower-text">
+                <img src="assets/green arrow.png" alt="" />
+                <div>1% v/s last year</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box4 box-data1">
+        <div class="inner-box1">
+          <span class="heading-insight">Insights</span>
+          <div class="bottom-box">
+            <div class="bottom-box-overflow">
+              <div class="scroller">
+                <div class="lower-text">
+                  <img src="assets/green arrow.png" alt="" />
+                  <div>
+                    AE611235566565656-AED Account Has High Cashflow for OCT 2021
+                  </div>
+                </div>
+                <div class="lower-text">
+                  <img src="assets/red arrow.png" alt="" />
+                  <div>
+                    AE611235564564546-AED Account Has Low Cashflow for OCT 2021
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-chart-container">
+    <div class="fl-container">
+      <div class="fl-box1 box-data">
+        <div class="fl-inner-box">
+          <div class="fl-left-top">
+            <div class="heading">Forecast Period</div>
+            <div class="heading-bottom">
+              <span>Select Period</span>
+              <div>
+                <label for="start"></label>
+                <input
+                  type="date"
+                  id="start"
+                  [(ngModel)]="startDate"
+                  (change)="onStartChange()"
+                  required
+                />
+
+                <label for="end"></label>
+                <input
+                  type="date"
+                  id="end"
+                  [(ngModel)]="endDate"
+                  (change)="onEndChange()"
+                  required
+                  [min]="startDate"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="fl-left-bottom">
+            <div>Showing forecast for <span>6 months</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fl-box2 box-data">
+        <div class="fl-inner-box">
+          <div class="fl-top">
+            <div>Cash Inflow Distribusion</div>
+          </div>
+          <div class="fl-bottom">
+            <div>
+              <canvas
+                id="donutChart1"
+                width="150"
+                height="150"
+                style="
+                  display: block;
+                  box-sizing: border-box;
+                  height: 98px;
+                  width: 300px !important;
+                  margin-left: -50px;
+                  padding: 0 3px;
+                "
+              ></canvas>
+              
+            </div>
+            <div style="font-size: 0.650rem; font-weight: 100; color: rgb(86, 86, 86); width: 97px; display: flex; flex-direction: column; gap: 3px;">
+              <div>AED 6,000</div>
+              <div>AED 70,000</div>
+              <div>AED 8,000</div>
+              <div>AED 2,000</div>
+              <div>AED 20,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fl-box3">
+        <div class="fl-inner-box">
+          <div class="fl-top">
+            <div>Cash Inflow Distribusion</div>
+          </div>
+          <div class="fl-bottom">
+            <div>
+              <canvas
+                id="donutChart2"
+                width="150"
+                height="150"
+                style="
+                  display: block;
+                  box-sizing: border-box;
+                  height: 98px;
+                  width: 300px !important;
+                  margin-left: -50px;
+                  padding: 0 3px;
+                "
+              ></canvas>
+              
+            </div>
+            <div style="font-size: 0.650rem; font-weight: 100; color: rgb(86, 86, 86); width: 97px; display: flex; flex-direction: column; gap: 3px;">
+              <div>AED 4,500</div>
+              <div>AED 5,000</div>
+              <div>AED 2,000</div>
+              <div>AED 3,000</div>
+              <div>AED 8,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fl-box4">
+        <div class="fl-inner-box">
+          <div class="fl-heading">
+            <div>Quick Action</div>
+          </div>
+          <div class="fl-links">
+            <a href="href">Book Forward Contract</a>
+            <a href="href">Start SIP</a>
+            <a href="href">Book Recurring Deposits</a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="account-details">
+    <div class="account-row">
+      <p class="account-text">
+        Account <span *ngIf="dataLength; else loading">({{ dataLength }})</span>
+        <ng-template #loading>(0)</ng-template>
+      </p>
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Enter Key to search"
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="details-container">
+    <ul *ngIf="!noDataAvailable; else noDataTemplate">
+      <li
+        *ngFor="let item of filteredAccountData; let i = index"
+        class="details-list"
+      >
+        <div class="details-nav">
+          <div class="details-id">{{ item.accountTitle }}</div>
+          <div class="detail-id-balance">
+            <div class="id-value">{{ item.accountNumber }}</div>
+            <span class="border"></span>
+            <div class="opening-balance">
+              Opening Balance <span>{{ item.openingBalance }}</span>
+            </div>
+          </div>
+          <div class="closing-balance">
+            Closing Balance <span>{{ item.closingBalance }}</span>
+          </div>
+          <div class="view-details" (click)="toggleDetails(i)">
+            <div class="view-details-text">
+              <a
+                [routerLink]="[
+                  '/summary-details',
+                  item.accountNumber,
+                  startDate,
+                  endDate,
+                  cifId[3].cifId
+                ]"
+                >View Details</a
+              >
+            </div>
+            <mat-icon>{{
+              isDetailsVisible[i] ? "expand_less" : "expand_more"
+            }}</mat-icon>
+          </div>
+        </div>
+        <div class="show-details" *ngIf="isDetailsVisible[i]">
+          <p>Details content for {{ item.accountNumber }} goes here...</p>
+        </div>
+      </li>
+    </ul>
+
+    <ng-template #noDataTemplate>
+      <div class="no-data-card">
+        <h3>This account is not available</h3>
+        <p>Please check your search criteria or try again later.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
